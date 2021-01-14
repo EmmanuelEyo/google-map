@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Google Map API</title>
+    <style>
+        #map{
+            height: 400px;
+            width: 100%;
+        }
+        .header-title{
+            text-align: center;
+            font-size: 25px;
+        }
+        @media (max-width: 320px) {
+            .header-title{
+                font-size: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="header-title">
+        <h1>My Google Map</h1>
+    </div>
+
+    <div id="map"></div>
+
+    <script>
+        function initMap () {
+            const ikorodu = { lat: 6.6194, lng: 3.5105}
+            const surulere = { lat: 6.4926, lng: 3.3490}
+            const lekki = { lat: 6.4698, lng: 3.5852}
+            const lagos = { lat: 6.5244, lng: 3.3792}
+            const options = {
+                zoom: 8,
+                center: lagos, 
+            }
+
+            const map = new google.maps.Map(document.getElementById('map'), options);
+
+            google.maps.event.addListener(map, 'click', function(event) {
+                addMarker ({coords:event.latLng})
+            })
+
+            /*const marker = new google.maps.Marker({
+                position: lekki,
+                map: map
+            });
+
+            const infoWindow = new google.maps.InfoWindow({
+                content: '<h1>Lekki, Lagos</h1>'
+            })
+
+            marker.addListener('click', function() {
+                infoWindow.open(map, marker)
+            })*/
+
+            var markers = [
+            {coords:{lat: 6.4698, lng: 3.5852}, content: '<h1>Lekki, Lagos</h1>'},
+
+            {coords:{lat: 6.4926, lng: 3.3490}, content: '<h1>Surulere, Lagos</h1>'},
+
+            {coords:{lat: 6.6194, lng: 3.5105}, content: '<h1>Ikorodu, Lagos</h1>'}
+            ]
+
+            for(var i = 0;i < markers.length;i++) {
+                addMarker(markers[i]);
+            }
+
+            function addMarker (props) {
+                const marker = new google.maps.Marker({
+                    position: props.coords,
+                    map: map
+                }) 
+
+                if (props.content) {
+                    const infoWindow = new google.maps.InfoWindow({
+                        content: props.content
+                    })
+
+                    marker.addListener('click', function(){
+                        infoWindow.open(map, marker)
+                    })
+                }
+            }
+        }
+    </script>
+
+
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDTeT9D3YBz7m6hFYioIE7WL0x_nHPkjm0&callback=initMap&libraries=&v=weekly"
+    defer></script>
+    
+</body>
+</html>
